@@ -319,13 +319,6 @@ namespace Hearthstone_Deck_Tracker.BobsBuddy
 				DebugLog("Board has unknown cards. Exiting.");
 				return;
 			}
-			if(_game.Opponent.Secrets.Any())
-			{
-				ErrorState = BobsBuddyErrorState.SecretsNotSupported;
-				DebugLog("Opponent has secrets in play. Exiting.");
-				return;
-			}
-
 			input.availableRaces = BattlegroundsUtils.GetAvailableRaces(_currentGameId).ToList();
 
 			var oppHero = _game.Opponent.Board.FirstOrDefault(x => x.IsHero);
@@ -353,6 +346,13 @@ namespace Hearthstone_Deck_Tracker.BobsBuddy
 			input.SetHeroPower(HeroPowerUsed(playerHeroPower), HeroPowerUsed(opponentHeroPower));
 
 			input.SetupSecretsFromDbfidList(_game.Player.Secrets.Select(x => x.Card.DbfIf).ToList());
+
+			if(_game.Opponent.Secrets.Any() && _input.opponentPowerID == NonCollectible.Neutral.PrestidigitationTavernBrawl)
+			{
+				ErrorState = BobsBuddyErrorState.SecretsNotSupported;
+				DebugLog("Opponent could have non-ice block secrets in play. Exiting.");
+				return;
+			}
 
 			foreach(var m in GetOrderedMinions(_game.Player.Board).Where(e => e.IsControlledBy(_game.Player.Id)).Select(e => GetMinionFromEntity(e, GetAttachedEntities(e.Id))))
 				m.AddToBackOfList(input.playerSide, simulator);
