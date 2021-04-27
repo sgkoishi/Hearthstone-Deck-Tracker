@@ -17,7 +17,7 @@ namespace Hearthstone_Deck_Tracker.Controls
 	{
 		private readonly string _allTags;
 
-		public DeckView(Deck deck, bool deckOnly = false)
+		public DeckView(Deck deck, bool deckOnly = false, bool golden = false, bool adventure = false)
 		{
 			InitializeComponent();
 			_allTags = deck.TagList.ToLowerInvariant().Replace("-", "");
@@ -36,7 +36,7 @@ namespace Hearthstone_Deck_Tracker.Controls
 				LblDeckTitle.Text = deck.Name;
 				LblDeckTag.Text = GetTagText(deck);
 				LblDeckFormat.Text = GetFormatText(deck);
-				LblDustCost.Text = TotalDust(deck).ToString();
+				LblDustCost.Text = TotalDust(deck, golden, adventure).ToString();
 				ShowFormatIcon(deck);
 				SetIcons.Update(deck);
 			}
@@ -121,24 +121,76 @@ namespace Hearthstone_Deck_Tracker.Controls
 				RectIconWild.Visibility = Visible;
 		}
 
-		private int TotalDust(Deck deck)
+		private int TotalDust(Deck deck, bool golden, bool adventure)
 		{
-			var nonCraftableSets = new[]
+			var crafting = new
 			{
-				CardSet.KARA,
-				CardSet.NAXX,
-				CardSet.BRM,
-				CardSet.LOE,
-				CardSet.CORE
-			}.Select(HearthDbConverter.SetConverter).ToList();
-			var nonCraftableCards = new List<string>() {
-				Neutral.Cthun,
-				Neutral.BeckonerOfEvil
+				UncraftableSets = new[]
+				{
+					CardSet.CORE
+				}.Select(HearthDbConverter.SetConverter).ToList(),
+				AdventureSets = new[] {
+					CardSet.KARA,
+					CardSet.NAXX,
+					CardSet.BRM,
+					CardSet.LOE,
+					CardSet.DRAGONS
+				}.Select(HearthDbConverter.SetConverter).ToList(),
+				UncraftableCards = new List<string> {
+					Neutral.BeckonerOfEvil,
+					Neutral.ShieldOfGalakrond,
+					Neutral.TransferStudent,
+					Neutral.Mankrik,
+					Neutral.ShadowHunterVoljin,
+					Neutral.SilasDarkmoon,
+					Neutral.KaelthasSunstrider,
+					Priest.GalakrondTheUnspeakable,
+					Warlock.GalakrondTheWretched,
+					Rogue.GalakrondTheNightmare,
+					Warrior.GalakrondTheUnbreakable,
+					Shaman.GalakrondTheTempest,
+					Neutral.Sathrovarr,
+					Neutral.MarinTheFox,
+					Neutral.Cthun,
+				},
+				UncraftableGoldenCards = new List<string> {
+					Neutral.VenomousScorpid,
+					Neutral.Peon,
+					Neutral.HogRancher,
+					Neutral.BurningBladeAcolyte,
+					Neutral.HordeOperative,
+					Neutral.MorshanWatchPost,
+					Neutral.PrimordialProtector,
+					Neutral.ShadowHunterVoljin,
+					Neutral.SilasDarkmoon,
+					Neutral.KaelthasSunstrider,
+					Neutral.Sathrovarr,
+					Neutral.MarinTheFox,
+					Neutral.ZayleShadowCloak,
+					Neutral.Sn1pSn4p
+				}
+			};
+
+			var dustCost = new Dictionary<(Rarity, bool), int>
+			{
+				[(Rarity.COMMON, true)] = 400,
+				[(Rarity.RARE, true)] = 800,
+				[(Rarity.EPIC, true)] = 1600,
+				[(Rarity.LEGENDARY, true)] = 3200,
+				[(Rarity.COMMON, false)] = 40,
+				[(Rarity.RARE, false)] = 100,
+				[(Rarity.EPIC, false)] = 400,
+				[(Rarity.LEGENDARY, false)] = 1600,
 			};
 
 			return deck.Cards
-				.Where(c => !nonCraftableSets.Contains(c.Set) && !nonCraftableCards.Contains(c.Id))
-				.Sum(c => c.DustCost * c.Count);
+				.Where(c => !crafting.UncraftableSets.Contains(c.Set)
+							&& dustCost.ContainsKey((c.Rarity, golden))
+							&& (!crafting.AdventureSets.Contains(c.Set) || adventure)
+							&& (golden
+								? !crafting.UncraftableGoldenCards.Contains(c.Id)
+								: !crafting.UncraftableCards.Contains(c.Id)))
+				.Sum(c => dustCost[(c.Rarity, golden)] * c.Count);
 		}
 
 		private string ClassToID(string klass)

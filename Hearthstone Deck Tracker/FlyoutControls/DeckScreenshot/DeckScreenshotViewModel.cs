@@ -25,6 +25,8 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckScreenshot
 		private const string ImgurUploaded = "DeckScreenshot_Button_Imgur_Success";
 
 		private bool _cardsOnly;
+		private bool _dustGolden;
+		private bool _dustAdventure = true;
 		private string _copyToClipboardButtonText = LocUtil.Get(ClipboardDefault, true);
 		private Deck _deck;
 		private BitmapSource _deckImage;
@@ -40,6 +42,30 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckScreenshot
 			set
 			{
 				_cardsOnly = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(TitleTextBoxVisibility));
+				UpdateImage();
+			}
+		}
+
+		public bool DustGoldenCards
+		{
+			get { return _dustGolden; }
+			set
+			{
+				_dustGolden = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(TitleTextBoxVisibility));
+				UpdateImage();
+			}
+		}
+
+		public bool DustAdventureCards
+		{
+			get { return _dustAdventure; }
+			set
+			{
+				_dustAdventure = value;
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(TitleTextBoxVisibility));
 				UpdateImage();
@@ -208,7 +234,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckScreenshot
 		{
 			if(_deck == null)
 				return;
-			DeckImage = DeckScreenshotHelper.Generate(_deck, CardsOnly);
+			DeckImage = DeckScreenshotHelper.Generate(_deck, CardsOnly, DustGoldenCards, DustAdventureCards);
 		}
 	}
 }
