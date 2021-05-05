@@ -18,12 +18,12 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckScreenshot
 		private const int ScreenshotWidth = 219;
 		private const int Dpi = 96;
 
-		public static RenderTargetBitmap Generate(Deck deck, bool cardsOnly, bool golden, bool adventure)
+		public static RenderTargetBitmap Generate(Deck deck, bool cardsOnly, bool adventure)
 		{
 			var height = CardHeight * deck.GetSelectedDeckVersion().Cards.Count;
 			if(!cardsOnly)
 				height += InfoHeight;
-			var control = new DeckView(deck, cardsOnly, golden, adventure);
+			var control = new DeckView(deck, cardsOnly, adventure);
 			control.Measure(new Size(ScreenshotWidth, height));
 			control.Arrange(new Rect(new Size(ScreenshotWidth, height)));
 			control.UpdateLayout();
@@ -77,7 +77,5 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckScreenshot
 				return false;
 			}
 		}
-
-
 	}
 }

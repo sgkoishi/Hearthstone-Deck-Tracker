@@ -17,7 +17,7 @@ namespace Hearthstone_Deck_Tracker.Controls
 	{
 		private readonly string _allTags;
 
-		public DeckView(Deck deck, bool deckOnly = false, bool golden = false, bool adventure = false)
+		public DeckView(Deck deck, bool deckOnly = false, bool adventure = false)
 		{
 			InitializeComponent();
 			_allTags = deck.TagList.ToLowerInvariant().Replace("-", "");
@@ -36,7 +36,7 @@ namespace Hearthstone_Deck_Tracker.Controls
 				LblDeckTitle.Text = deck.Name;
 				LblDeckTag.Text = GetTagText(deck);
 				LblDeckFormat.Text = GetFormatText(deck);
-				LblDustCost.Text = TotalDust(deck, golden, adventure).ToString();
+				LblDustCost.Text = TotalDust(deck, adventure).ToString();
 				ShowFormatIcon(deck);
 				SetIcons.Update(deck);
 			}
@@ -121,7 +121,7 @@ namespace Hearthstone_Deck_Tracker.Controls
 				RectIconWild.Visibility = Visible;
 		}
 
-		private int TotalDust(Deck deck, bool golden, bool adventure)
+		private int TotalDust(Deck deck, bool adventure, bool golden = false)
 		{
 			var crafting = new
 			{

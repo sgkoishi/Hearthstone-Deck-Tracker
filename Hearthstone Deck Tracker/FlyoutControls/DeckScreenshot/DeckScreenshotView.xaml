@@ -12,7 +12,6 @@
     </UserControl.DataContext>
     <DockPanel Margin="5,0">
         <CheckBox Content="{lex:Loc DeckScreenshot_Label_CardsOnly}" IsChecked="{Binding CardsOnly}" DockPanel.Dock="Top" />
-        <CheckBox Content="{lex:Loc DeckScreenshot_Label_GoldenDust}" IsChecked="{Binding DustGoldenCards}" DockPanel.Dock="Top" />
         <CheckBox Content="{lex:Loc DeckScreenshot_Label_Adventure}" IsChecked="{Binding DustAdventureCards}" DockPanel.Dock="Top" />
         <DockPanel DockPanel.Dock="Top" Margin="0,5,0,0" Visibility="{Binding TitleTextBoxVisibility}">
             <Label Content="{lex:Loc DeckScreenshot_Label_Title}" DockPanel.Dock="Left"/>

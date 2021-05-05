@@ -152,7 +152,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckExport
 			get => _hasCollectionData;
 			set
 			{
-				_hasCollectionData = value; 
+				_hasCollectionData = value;
 				OnPropertyChanged();
 			}
 		}
@@ -162,7 +162,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckExport
 			get => _hasMissingCards;
 			set
 			{
-				_hasMissingCards = value; 
+				_hasMissingCards = value;
 				OnPropertyChanged();
 			}
 		}
@@ -174,7 +174,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckExport
 			{
 				if(value != _missingCards)
 				{
-					_missingCards = value; 
+					_missingCards = value;
 					OnPropertyChanged();
 				}
 			}
@@ -185,7 +185,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckExport
 			get => _totalDustCost;
 			set
 			{
-				_totalDustCost = value; 
+				_totalDustCost = value;
 				OnPropertyChanged();
 			}
 		}
@@ -195,7 +195,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckExport
 			get => _requiresKarazhan;
 			set
 			{
-				_requiresKarazhan = value; 
+				_requiresKarazhan = value;
 				OnPropertyChanged();
 			}
 		}
@@ -207,7 +207,7 @@ namespace Hearthstone_Deck_Tracker.FlyoutControls.DeckExport
 			get => _missingCardsHeader;
 			set
 			{
-				_missingCardsHeader = value; 
+				_missingCardsHeader = value;
 				OnPropertyChanged();
 			}
 		}
